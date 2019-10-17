@@ -16,6 +16,8 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -118,5 +120,65 @@ public class NafHelper  {
     }
 
 
+    public static List<Trip> generateAtrip() {
 
+        List<Trip> t = new ArrayList<>();
+        t.add(new Trip(77.118,-0.263));
+        t.add(new Trip(76.118,-0.263));
+        t.add(new Trip(75.118,-0.263));
+        t.add(new Trip(74.118,-0.263));
+        t.add(new Trip(73.118,-0.263));
+        t.add(new Trip(72.118,-0.263));
+        t.add(new Trip(71.118,-0.263));
+        t.add(new Trip(70.118,-0.263));
+        t.add(new Trip(69.118,-0.263));
+        t.add(new Trip(68.118,-0.263));
+        t.add(new Trip(67.118,-0.263));
+        t.add(new Trip(66.118,-0.263));
+        t.add(new Trip(65.118,-0.263));
+
+        t.add(new Trip(66.118,-0.263));
+        t.add(new Trip(67.118,-0.263));
+        t.add(new Trip(68.118,-0.263));
+        t.add(new Trip(69.118,-0.263));
+        t.add(new Trip(70.118,-0.263));
+        t.add(new Trip(71.118,-0.263));
+        t.add(new Trip(72.118,-0.263));
+        t.add(new Trip(73.118,-0.263));
+        t.add(new Trip(74.118,-0.263));
+        t.add(new Trip(75.118,-0.263));
+        t.add(new Trip(76.118,-0.263));
+        t.add(new Trip(77.118,-0.263));
+        t.add(new Trip(78.118,-0.263));
+
+        t.add(new Trip(77.118,-0.163));
+        t.add(new Trip(76.118,-0.163));
+        t.add(new Trip(75.118,-0.163));
+        t.add(new Trip(74.118,-0.163));
+        t.add(new Trip(73.118,-0.163));
+        t.add(new Trip(72.118,-0.163));
+        t.add(new Trip(71.118,-0.163));
+        t.add(new Trip(70.118,-0.163));
+        t.add(new Trip(69.118,-0.163));
+        t.add(new Trip(68.118,-0.163));
+        t.add(new Trip(67.118,-0.163));
+        t.add(new Trip(66.118,-0.163));
+        t.add(new Trip(65.118,-0.163));
+
+        t.add(new Trip(66.118,-0.163));
+        t.add(new Trip(67.118,-0.163));
+        t.add(new Trip(68.118,-0.163));
+        t.add(new Trip(69.118,-0.163));
+        t.add(new Trip(70.118,-0.163));
+        t.add(new Trip(71.118,-0.163));
+        t.add(new Trip(72.118,-0.163));
+        t.add(new Trip(73.118,-0.163));
+        t.add(new Trip(74.118,-0.163));
+        t.add(new Trip(75.118,-0.163));
+        t.add(new Trip(76.118,-0.163));
+        t.add(new Trip(77.118,-0.163));
+        t.add(new Trip(78.118,-0.163));
+        return t;
+
+    }
 }

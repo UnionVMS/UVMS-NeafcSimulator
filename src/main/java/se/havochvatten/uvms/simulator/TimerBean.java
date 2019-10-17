@@ -3,6 +3,7 @@ package se.havochvatten.uvms.simulator;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.enterprise.context.ApplicationScoped;
@@ -21,19 +22,31 @@ import io.quarkus.scheduler.Scheduled;
 @ApplicationScoped
 public class TimerBean {
 
-    LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
+    LatLong position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
     AssetDTO asset = NafHelper.createTestAsset();
+    List<Trip> aTrip;
+    int tripStep = 0;
+
+    public TimerBean(){
+        aTrip = NafHelper.generateAtrip();
+    }
+
+    private void calcPosition(){
+        position.longitude = aTrip.get(tripStep).longitude;
+        position.latitude = aTrip.get(tripStep).latitude;
+        position.positionTime = Date.from(Instant.now().minusMillis(10 * 60 * 1000));
+        tripStep++;
+        if(tripStep >= aTrip.size()){
+            tripStep = 0;
+        }
+    }
 
 
 
-    @Scheduled(every="1m")
+    @Scheduled(every="2m")
     void sendPosition() {
         try {
-
-            position.longitude += 0.01;
-            position.latitude += 0.01;
-            position.positionTime = Date.from(Instant.now().minusMillis(10 * 60 * 1000));
-
+            calcPosition();
             NafHelper.sendPositionToNAFPlugin(position, asset);
         } catch (IOException e) {
             System.out.println("ERROR");
