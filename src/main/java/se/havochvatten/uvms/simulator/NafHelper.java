@@ -1,5 +1,10 @@
 package se.havochvatten.uvms.simulator;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -18,16 +23,15 @@ import java.util.regex.Pattern;
 
 public class NafHelper  {
 
-    public static void sendPositionToNAFPlugin(LatLong position, AssetDTO asset) throws IOException {
+    public void sendPositionToNAFPlugin(String url, LatLong position, AssetDTO asset) throws IOException {
 
         String nafString = convertToNafString(position, asset);
-        String requestPath = "http://localhost:28080/naf/rest/message/" + nafString;
+        String requestPath = url + "naf/rest/message/" + nafString;
         Client client = ClientBuilder.newClient();
         try {
             client.target(requestPath).request(MediaType.APPLICATION_JSON).get();
         }
         finally{
-
             client.close();
         }
     }
@@ -59,7 +63,7 @@ public class NafHelper  {
         return URLEncoder.encode(str, "UTF-8");
     }
 
-    public static String readCodeValue(String code, String nafMessage) {
+    public  String readCodeValue(String code, String nafMessage) {
         Pattern pattern = Pattern.compile("//" + code + "/" + "([^" + "/" + "]+)" + "//");
         Matcher matcher = pattern.matcher(nafMessage);
         matcher.find();
@@ -67,7 +71,7 @@ public class NafHelper  {
     }
 
 
-    public static  AssetDTO createTestAsset() {
+    public  AssetDTO createTestAsset() {
 
         AssetDTO asset = new AssetDTO();
 
@@ -103,7 +107,7 @@ public class NafHelper  {
 
     }
 
-    private static String generateARandomStringWithMaxLength(int len) {
+    private  String generateARandomStringWithMaxLength(int len) {
         String ret = "";
         for (int i = 0; i < len; i++) {
             int val = new Random().nextInt(10);
@@ -113,7 +117,7 @@ public class NafHelper  {
     }
 
 
-    public static List<TripPos> generateAtrip() {
+    public  List<TripPos> generateAtrip() {
 
         List<TripPos> t = new ArrayList<>();
         t.add(new TripPos(77.118,-0.263));

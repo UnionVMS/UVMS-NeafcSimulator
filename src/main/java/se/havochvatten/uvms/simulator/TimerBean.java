@@ -5,7 +5,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import io.quarkus.scheduler.Scheduled;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 // start in dev mode :  mvnw compile quarkus:dev  (remote debug on 5005)
 // build             :  mvnw clean package   -> output in target as usual
@@ -17,16 +20,21 @@ import io.quarkus.scheduler.Scheduled;
 // add an extention if needed : mvnw quarkus:add-extension -Dextensions="hibernate-validator"
 
 
-@ApplicationScoped
 public class TimerBean {
 
-    LatLong position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
-    AssetDTO asset = NafHelper.createTestAsset();
+    NafHelper nafHelper = new NafHelper();
+    AssetDTO asset;
     List<TripPos> aTrip;
+    LatLong position ;
     int tripStep = 0;
 
+    @ConfigProperty(name = "simulator.nafurl")
+    public String nafUrl;
+
     public TimerBean(){
-        aTrip = NafHelper.generateAtrip();
+        asset = nafHelper.createTestAsset();
+        aTrip = nafHelper.generateAtrip();
+        position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
     }
 
     private void calcPosition(){
@@ -45,7 +53,7 @@ public class TimerBean {
     void sendPosition() {
         try {
             calcPosition();
-            NafHelper.sendPositionToNAFPlugin(position, asset);
+            nafHelper.sendPositionToNAFPlugin(nafUrl, position, asset);
         } catch (IOException e) {
             System.out.println("ERROR");
             System.out.println(e.toString());
