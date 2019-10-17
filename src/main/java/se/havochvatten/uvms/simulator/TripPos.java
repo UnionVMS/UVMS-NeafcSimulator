@@ -1,10 +1,10 @@
 package se.havochvatten.uvms.simulator;
 
-public class Trip {
+public class TripPos {
 
     public double latitude;
     public double longitude;
-    public Trip(double latitude, double longitude){
+    public TripPos(double latitude, double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
     }

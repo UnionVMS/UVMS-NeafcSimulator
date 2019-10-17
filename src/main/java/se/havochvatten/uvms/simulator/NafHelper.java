@@ -1,17 +1,10 @@
 package se.havochvatten.uvms.simulator;
 
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.wildfly.common.Assert;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -120,64 +113,64 @@ public class NafHelper  {
     }
 
 
-    public static List<Trip> generateAtrip() {
+    public static List<TripPos> generateAtrip() {
 
-        List<Trip> t = new ArrayList<>();
-        t.add(new Trip(77.118,-0.263));
-        t.add(new Trip(76.118,-0.263));
-        t.add(new Trip(75.118,-0.263));
-        t.add(new Trip(74.118,-0.263));
-        t.add(new Trip(73.118,-0.263));
-        t.add(new Trip(72.118,-0.263));
-        t.add(new Trip(71.118,-0.263));
-        t.add(new Trip(70.118,-0.263));
-        t.add(new Trip(69.118,-0.263));
-        t.add(new Trip(68.118,-0.263));
-        t.add(new Trip(67.118,-0.263));
-        t.add(new Trip(66.118,-0.263));
-        t.add(new Trip(65.118,-0.263));
+        List<TripPos> t = new ArrayList<>();
+        t.add(new TripPos(77.118,-0.263));
+        t.add(new TripPos(76.118,-0.263));
+        t.add(new TripPos(75.118,-0.263));
+        t.add(new TripPos(74.118,-0.263));
+        t.add(new TripPos(73.118,-0.263));
+        t.add(new TripPos(72.118,-0.263));
+        t.add(new TripPos(71.118,-0.263));
+        t.add(new TripPos(70.118,-0.263));
+        t.add(new TripPos(69.118,-0.263));
+        t.add(new TripPos(68.118,-0.263));
+        t.add(new TripPos(67.118,-0.263));
+        t.add(new TripPos(66.118,-0.263));
+        t.add(new TripPos(65.118,-0.263));
 
-        t.add(new Trip(66.118,-0.263));
-        t.add(new Trip(67.118,-0.263));
-        t.add(new Trip(68.118,-0.263));
-        t.add(new Trip(69.118,-0.263));
-        t.add(new Trip(70.118,-0.263));
-        t.add(new Trip(71.118,-0.263));
-        t.add(new Trip(72.118,-0.263));
-        t.add(new Trip(73.118,-0.263));
-        t.add(new Trip(74.118,-0.263));
-        t.add(new Trip(75.118,-0.263));
-        t.add(new Trip(76.118,-0.263));
-        t.add(new Trip(77.118,-0.263));
-        t.add(new Trip(78.118,-0.263));
+        t.add(new TripPos(66.118,-0.263));
+        t.add(new TripPos(67.118,-0.263));
+        t.add(new TripPos(68.118,-0.263));
+        t.add(new TripPos(69.118,-0.263));
+        t.add(new TripPos(70.118,-0.263));
+        t.add(new TripPos(71.118,-0.263));
+        t.add(new TripPos(72.118,-0.263));
+        t.add(new TripPos(73.118,-0.263));
+        t.add(new TripPos(74.118,-0.263));
+        t.add(new TripPos(75.118,-0.263));
+        t.add(new TripPos(76.118,-0.263));
+        t.add(new TripPos(77.118,-0.263));
+        t.add(new TripPos(78.118,-0.263));
 
-        t.add(new Trip(77.118,-0.163));
-        t.add(new Trip(76.118,-0.163));
-        t.add(new Trip(75.118,-0.163));
-        t.add(new Trip(74.118,-0.163));
-        t.add(new Trip(73.118,-0.163));
-        t.add(new Trip(72.118,-0.163));
-        t.add(new Trip(71.118,-0.163));
-        t.add(new Trip(70.118,-0.163));
-        t.add(new Trip(69.118,-0.163));
-        t.add(new Trip(68.118,-0.163));
-        t.add(new Trip(67.118,-0.163));
-        t.add(new Trip(66.118,-0.163));
-        t.add(new Trip(65.118,-0.163));
+        t.add(new TripPos(77.118,-0.163));
+        t.add(new TripPos(76.118,-0.163));
+        t.add(new TripPos(75.118,-0.163));
+        t.add(new TripPos(74.118,-0.163));
+        t.add(new TripPos(73.118,-0.163));
+        t.add(new TripPos(72.118,-0.163));
+        t.add(new TripPos(71.118,-0.163));
+        t.add(new TripPos(70.118,-0.163));
+        t.add(new TripPos(69.118,-0.163));
+        t.add(new TripPos(68.118,-0.163));
+        t.add(new TripPos(67.118,-0.163));
+        t.add(new TripPos(66.118,-0.163));
+        t.add(new TripPos(65.118,-0.163));
 
-        t.add(new Trip(66.118,-0.163));
-        t.add(new Trip(67.118,-0.163));
-        t.add(new Trip(68.118,-0.163));
-        t.add(new Trip(69.118,-0.163));
-        t.add(new Trip(70.118,-0.163));
-        t.add(new Trip(71.118,-0.163));
-        t.add(new Trip(72.118,-0.163));
-        t.add(new Trip(73.118,-0.163));
-        t.add(new Trip(74.118,-0.163));
-        t.add(new Trip(75.118,-0.163));
-        t.add(new Trip(76.118,-0.163));
-        t.add(new Trip(77.118,-0.163));
-        t.add(new Trip(78.118,-0.163));
+        t.add(new TripPos(66.118,-0.163));
+        t.add(new TripPos(67.118,-0.163));
+        t.add(new TripPos(68.118,-0.163));
+        t.add(new TripPos(69.118,-0.163));
+        t.add(new TripPos(70.118,-0.163));
+        t.add(new TripPos(71.118,-0.163));
+        t.add(new TripPos(72.118,-0.163));
+        t.add(new TripPos(73.118,-0.163));
+        t.add(new TripPos(74.118,-0.163));
+        t.add(new TripPos(75.118,-0.163));
+        t.add(new TripPos(76.118,-0.163));
+        t.add(new TripPos(77.118,-0.163));
+        t.add(new TripPos(78.118,-0.163));
         return t;
 
     }

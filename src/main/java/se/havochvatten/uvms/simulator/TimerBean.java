@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.enterprise.context.ApplicationScoped;
 import io.quarkus.scheduler.Scheduled;
 
@@ -24,7 +22,7 @@ public class TimerBean {
 
     LatLong position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
     AssetDTO asset = NafHelper.createTestAsset();
-    List<Trip> aTrip;
+    List<TripPos> aTrip;
     int tripStep = 0;
 
     public TimerBean(){
