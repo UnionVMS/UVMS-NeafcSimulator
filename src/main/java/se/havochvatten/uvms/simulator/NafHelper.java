@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,12 +24,6 @@ import java.util.regex.Pattern;
 public class NafHelper  {
 
     public static void sendPositionToNAFPlugin(LatLong position, AssetDTO asset) throws IOException {
-
-
-        position.longitude += 0.01;
-        position.latitude += 0.01;
-        position.positionTime.setTime(position.positionTime.getTime() + 1000);
-
 
         String nafString = convertToNafString(position, asset);
         String requestPath = "http://localhost:28080/naf/rest/message/" + nafString;
@@ -75,4 +70,53 @@ public class NafHelper  {
         matcher.find();
         return matcher.group(1);
     }
+
+
+    public static  AssetDTO createTestAsset() {
+
+        AssetDTO asset = new AssetDTO();
+
+        asset.setActive(true);
+
+        asset.setName("Ship" + generateARandomStringWithMaxLength(10));
+        asset.setCfr("CFR" + generateARandomStringWithMaxLength(9));
+        asset.setFlagStateCode("SWE");
+        asset.setIrcsIndicator(true);
+        asset.setIrcs("F" + generateARandomStringWithMaxLength(7));
+        asset.setExternalMarking("EXT3");
+        asset.setImo("0" + generateARandomStringWithMaxLength(6));
+        asset.setMmsi(generateARandomStringWithMaxLength(9));
+
+        asset.setSource("INTERNAL");
+
+        asset.setMainFishingGearCode("DERMERSAL");
+        asset.setHasLicence(true);
+        asset.setLicenceType("MOCK-license-DB");
+        asset.setPortOfRegistration("TEST_GOT");
+        asset.setLengthOverAll(15.0);
+        asset.setLengthBetweenPerpendiculars(3.0);
+        asset.setGrossTonnage(200.0);
+
+        asset.setGrossTonnageUnit("OSLO");
+        asset.setSafteyGrossTonnage(80.0);
+        asset.setPowerOfMainEngine(10.0);
+        asset.setPowerOfAuxEngine(10.0);
+
+        return asset;
+
+
+
+    }
+
+    private static String generateARandomStringWithMaxLength(int len) {
+        String ret = "";
+        for (int i = 0; i < len; i++) {
+            int val = new Random().nextInt(10);
+            ret += String.valueOf(val);
+        }
+        return ret;
+    }
+
+
+
 }
