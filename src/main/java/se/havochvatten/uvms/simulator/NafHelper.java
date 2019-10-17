@@ -21,7 +21,13 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Dependent
 public class NafHelper  {
+
+    public NafHelper(){
+
+    }
+
 
     public void sendPositionToNAFPlugin(String url, LatLong position, AssetDTO asset) throws IOException {
 
