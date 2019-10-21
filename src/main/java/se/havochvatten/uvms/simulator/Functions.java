@@ -122,68 +122,28 @@ public class Functions {
 
 
 
-
-
     public List<TripPos> generateAtrip() {
-
         List<TripPos> t = new ArrayList<>();
-        t.add(new TripPos(77.118, -0.263));
-        t.add(new TripPos(76.118, -0.263));
-        t.add(new TripPos(75.118, -0.263));
-        t.add(new TripPos(74.118, -0.263));
-        t.add(new TripPos(73.118, -0.263));
-        t.add(new TripPos(72.118, -0.263));
-        t.add(new TripPos(71.118, -0.263));
-        t.add(new TripPos(70.118, -0.263));
-        t.add(new TripPos(69.118, -0.263));
-        t.add(new TripPos(68.118, -0.263));
-        t.add(new TripPos(67.118, -0.263));
-        t.add(new TripPos(66.118, -0.263));
-        t.add(new TripPos(65.118, -0.263));
 
-        t.add(new TripPos(66.118, -0.263));
-        t.add(new TripPos(67.118, -0.263));
-        t.add(new TripPos(68.118, -0.263));
-        t.add(new TripPos(69.118, -0.263));
-        t.add(new TripPos(70.118, -0.263));
-        t.add(new TripPos(71.118, -0.263));
-        t.add(new TripPos(72.118, -0.263));
-        t.add(new TripPos(73.118, -0.263));
-        t.add(new TripPos(74.118, -0.263));
-        t.add(new TripPos(75.118, -0.263));
-        t.add(new TripPos(76.118, -0.263));
-        t.add(new TripPos(77.118, -0.263));
-        t.add(new TripPos(78.118, -0.263));
+        double latitude = 77.118;
+        double longitude = -0.263;
 
-        t.add(new TripPos(77.118, -0.163));
-        t.add(new TripPos(76.118, -0.163));
-        t.add(new TripPos(75.118, -0.163));
-        t.add(new TripPos(74.118, -0.163));
-        t.add(new TripPos(73.118, -0.163));
-        t.add(new TripPos(72.118, -0.163));
-        t.add(new TripPos(71.118, -0.163));
-        t.add(new TripPos(70.118, -0.163));
-        t.add(new TripPos(69.118, -0.163));
-        t.add(new TripPos(68.118, -0.163));
-        t.add(new TripPos(67.118, -0.163));
-        t.add(new TripPos(66.118, -0.163));
-        t.add(new TripPos(65.118, -0.163));
+        int position = 0;
+        int n = 13;
 
-        t.add(new TripPos(66.118, -0.163));
-        t.add(new TripPos(67.118, -0.163));
-        t.add(new TripPos(68.118, -0.163));
-        t.add(new TripPos(69.118, -0.163));
-        t.add(new TripPos(70.118, -0.163));
-        t.add(new TripPos(71.118, -0.163));
-        t.add(new TripPos(72.118, -0.163));
-        t.add(new TripPos(73.118, -0.163));
-        t.add(new TripPos(74.118, -0.163));
-        t.add(new TripPos(75.118, -0.163));
-        t.add(new TripPos(76.118, -0.163));
-        t.add(new TripPos(77.118, -0.163));
-        t.add(new TripPos(78.118, -0.163));
+        while(position < n){
+            t.add(new TripPos(latitude, longitude));
+            latitude += 1;
+            position++;
+        }
+        while(position >= 0){
+            t.add(new TripPos(latitude, longitude));
+            latitude -= 1;
+            position--;
+        }
         return t;
-
     }
+
+
 
 }

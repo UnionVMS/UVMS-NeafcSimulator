@@ -14,9 +14,11 @@ import java.util.Date;
 import java.util.List;
 
 // start in dev mode :  mvnw compile quarkus:dev  (remote debug on 5005)
+//                      mvnw compile quarkus:dev -Dsuspend  (wait for debugger attach)
 // build             :  mvnw clean package   -> output in target as usual
 // execute           :  java -jar UVMS-NeafcSimulator-1.0-SNAPSHOT-runner
 // stop              :  ctrl-c
+//
 
 
 // list available extentions mvnw quarkus:list-extensions
