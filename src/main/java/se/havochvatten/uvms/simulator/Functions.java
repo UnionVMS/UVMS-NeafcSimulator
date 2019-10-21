@@ -14,12 +14,12 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.*;
 
 @Dependent
 public class Functions {
@@ -122,11 +122,51 @@ public class Functions {
 
 
 
-    public List<TripPos> generateAtrip() {
+    public List<TripPos> harbourToSea() {
         List<TripPos> t = new ArrayList<>();
 
-        double latitude = 77.118;
-        double longitude = -0.263;
+        t.add(new TripPos( 63.440   ,  10.411));
+        t.add(new TripPos( 63.442   ,  10.412));
+        t.add(new TripPos( 63.444   ,  10.408));
+        t.add(new TripPos( 63.443   ,  10.396));
+        t.add(new TripPos( 63.447   ,  10.380));
+        t.add(new TripPos( 63.450   ,  10.366));
+        t.add(new TripPos( 63.455   ,  10.388));
+        t.add(new TripPos( 63.459   ,  10.299));
+        t.add(new TripPos( 63.460   ,  10.282));
+        t.add(new TripPos( 63.461   ,  10.265));
+        t.add(new TripPos( 63.464   ,  10.236));
+        t.add(new TripPos( 63.465   ,  10.198));
+        t.add(new TripPos( 63.446   ,  10.139));
+        t.add(new TripPos( 63.459   ,  9.993));
+        t.add(new TripPos( 63.562   ,  9.872));
+        t.add(new TripPos( 63.650   ,  9.790));
+        t.add(new TripPos( 63.594   ,  9.548));
+        t.add(new TripPos( 63.494   ,  9.166));
+        t.add(new TripPos( 63.420   ,  8.828));
+        t.add(new TripPos( 63.365   ,  8.496));
+        t.add(new TripPos( 63.325   ,  8.367));
+        t.add(new TripPos( 63.513   ,  8.180));
+        t.add(new TripPos( 63.650   ,  7.963));
+        t.add(new TripPos( 63.729   ,  7.757));
+        t.add(new TripPos( 63.763   ,  7.667));
+
+        return t;
+    }
+
+    public List<TripPos> seaToHarbour() {
+        List<TripPos> t = harbourToSea();
+        Collections.reverse(t);;
+        return t;
+    }
+
+
+
+    public List<TripPos> generateTrondheimTrip() {
+        List<TripPos> t = harbourToSea();
+
+        double latitude = 64.041;
+        double longitude = -0.280;
 
         int position = 0;
         int n = 13;
@@ -136,13 +176,64 @@ public class Functions {
             latitude += 1;
             position++;
         }
+
+        longitude = longitude + 0.5;
+
         while(position >= 0){
             t.add(new TripPos(latitude, longitude));
             latitude -= 1;
             position--;
         }
+
+        t.addAll(seaToHarbour());
+
         return t;
+
     }
+
+
+    public double calcSpeed(LatLong src, LatLong dst) {
+        try {
+            if (src.positionTime == null)
+                return 0;
+            if (dst.positionTime == null)
+                return 0;
+            // distance to next
+            double distanceM = src.distance;
+            double durationMs = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
+            double durationSecs = durationMs / 1000;
+            double speedMeterPerSecond = (distanceM / durationSecs);
+            double speedMPerHour = speedMeterPerSecond * 3600;
+            return speedMPerHour / 1000;
+        } catch (RuntimeException e) {
+            return 0.0;
+        }
+    }
+
+    public  double getBearing(List<TripPos> aTrip, int step) {
+        /**
+         * Formula: θ = atan2( sin(Δlong).cos(lat2), cos(lat1).sin(lat2) −
+         * sin(lat1).cos(lat2).cos(Δlong) )
+         */
+
+        TripPos forePoint = aTrip.get(step);
+        TripPos standPoint = null;
+        if(step == 0){
+            standPoint = aTrip.get(step);
+        } else{
+            standPoint = aTrip.get(step - 1);
+        }
+
+
+        double y = sin(toRadians(forePoint.longitude - standPoint.longitude)) * cos(toRadians(forePoint.latitude));
+        double x = cos(toRadians(standPoint.latitude)) * sin(toRadians(forePoint.latitude))
+                - sin(toRadians(standPoint.latitude)) * cos(toRadians(forePoint.latitude)) * cos(toRadians(forePoint.longitude - standPoint.longitude));
+        double bearing = (atan2(y, x) + 2 * PI) % (2 * PI);
+        return toDegrees(bearing);
+    }
+
+
+
 
 
 

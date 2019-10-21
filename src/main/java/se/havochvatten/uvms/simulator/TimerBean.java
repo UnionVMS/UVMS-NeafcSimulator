@@ -41,7 +41,7 @@ public class TimerBean {
     public void init() {
         LOG.info("init");
         asset = functions.createTestAsset();
-        aTrip = functions.generateAtrip();
+        aTrip = functions.generateTrondheimTrip();
         position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
     }
 
@@ -55,6 +55,7 @@ public class TimerBean {
         position.longitude = aTrip.get(tripStep).longitude;
         position.latitude = aTrip.get(tripStep).latitude;
         position.positionTime = Date.from(Instant.now().minusMillis(10 * 60 * 1000));
+        position.bearing = functions.getBearing(aTrip, tripStep);
         tripStep++;
         if (tripStep >= aTrip.size()) {
             tripStep = 0;
