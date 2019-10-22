@@ -63,7 +63,7 @@ public class TimerBean {
     }
 
 
-    @Scheduled(every = "2m")
+    @Scheduled(every = "60m")
     void sendPosition() {
 
         try {
