@@ -1,5 +1,9 @@
 package se.havochvatten.uvms.simulator;
 
+import com.peertopark.java.geocalc.Coordinate;
+import com.peertopark.java.geocalc.DegreeCoordinate;
+import com.peertopark.java.geocalc.EarthCalc;
+import com.peertopark.java.geocalc.Point;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +109,7 @@ public class Functions {
         return ret;
     }
 
-    public void sendPositionToNAFPlugin( LatLong position, AssetDTO asset) throws IOException {
+    public void sendPositionToNAFPlugin(LatLong position, AssetDTO asset) throws IOException {
 
         String nafString = convertToNafString(position, asset);
         LOG.info("send position to " + nafUrl);
@@ -120,49 +124,48 @@ public class Functions {
     }
 
 
+    public List<LatLong> generateTrip() {
+        List<LatLong> t = new ArrayList<>();
+        List<TripPos> trip = generateTrondheimTrip();
+
+        for (int i = 0; i < trip.size(); i++) {
+            TripPos tripPos = trip.get(i);
+            LatLong position = new LatLong(tripPos.latitude, tripPos.longitude, null);
+            position.bearing = calcBearing(trip, i);
+            t.add(position);
+        }
+        return t;
+    }
 
 
-    public List<TripPos> harbourToSea() {
+    private List<TripPos> harbourToSea() {
         List<TripPos> t = new ArrayList<>();
 
-        t.add(new TripPos( 63.440   ,  10.411));
-        t.add(new TripPos( 63.442   ,  10.412));
-        t.add(new TripPos( 63.444   ,  10.408));
-        t.add(new TripPos( 63.443   ,  10.396));
-        t.add(new TripPos( 63.447   ,  10.380));
-        t.add(new TripPos( 63.450   ,  10.366));
-        t.add(new TripPos( 63.455   ,  10.388));
-        t.add(new TripPos( 63.459   ,  10.299));
-        t.add(new TripPos( 63.460   ,  10.282));
-        t.add(new TripPos( 63.461   ,  10.265));
-        t.add(new TripPos( 63.464   ,  10.236));
-        t.add(new TripPos( 63.465   ,  10.198));
-        t.add(new TripPos( 63.446   ,  10.139));
-        t.add(new TripPos( 63.459   ,  9.993));
-        t.add(new TripPos( 63.562   ,  9.872));
-        t.add(new TripPos( 63.650   ,  9.790));
-        t.add(new TripPos( 63.594   ,  9.548));
-        t.add(new TripPos( 63.494   ,  9.166));
-        t.add(new TripPos( 63.420   ,  8.828));
-        t.add(new TripPos( 63.365   ,  8.496));
-        t.add(new TripPos( 63.325   ,  8.367));
-        t.add(new TripPos( 63.513   ,  8.180));
-        t.add(new TripPos( 63.650   ,  7.963));
-        t.add(new TripPos( 63.729   ,  7.757));
-        t.add(new TripPos( 63.763   ,  7.667));
+        t.add(new TripPos(63.4397, 10.4114));
+        t.add(new TripPos(63.4475, 10.4183));
+        t.add(new TripPos(63.4426, 10.3961));
+        t.add(new TripPos(63.4465, 10.3802));
+        t.add(new TripPos(63.4561, 10.3352));
+        t.add(new TripPos(63.4550, 10.1325));
+        t.add(new TripPos(63.4458, 9.9965));
+        t.add(new TripPos(63.5078, 9.8540));
+        t.add(new TripPos(63.6661, 9.7936));
+        t.add(new TripPos(63.3383, 8.3448));
+        t.add(new TripPos(63.4873, 8.2034));
+        t.add(new TripPos(63.6731, 7.9452));
+        t.add(new TripPos(63.763, 7.667));
 
         return t;
     }
 
-    public List<TripPos> seaToHarbour() {
+    private List<TripPos> seaToHarbour() {
         List<TripPos> t = harbourToSea();
-        Collections.reverse(t);;
+        Collections.reverse(t);
         return t;
     }
 
 
-
-    public List<TripPos> generateTrondheimTrip() {
+    private List<TripPos> generateTrondheimTrip() {
         List<TripPos> t = harbourToSea();
 
         double latitude = 64.041;
@@ -171,7 +174,7 @@ public class Functions {
         int position = 0;
         int n = 13;
 
-        while(position < n){
+        while (position < n) {
             t.add(new TripPos(latitude, longitude));
             latitude += 1;
             position++;
@@ -179,7 +182,7 @@ public class Functions {
 
         longitude = longitude + 0.5;
 
-        while(position >= 0){
+        while (position >= 0) {
             t.add(new TripPos(latitude, longitude));
             latitude -= 1;
             position--;
@@ -191,15 +194,24 @@ public class Functions {
 
     }
 
+    public double calcSpeed(List<LatLong> trip, int tripStep) {
 
-    public double calcSpeed(LatLong src, LatLong dst) {
+        if (tripStep == 0) {
+            return 0.0d;
+        } else {
+            return calcSpeed(trip.get(tripStep - 1), trip.get(tripStep));
+        }
+    }
+
+
+    private double calcSpeed(LatLong src, LatLong dst) {
         try {
             if (src.positionTime == null)
                 return 0;
             if (dst.positionTime == null)
                 return 0;
             // distance to next
-            double distanceM = src.distance;
+            double distanceM = distance(src,  dst);
             double durationMs = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
             double durationSecs = durationMs / 1000;
             double speedMeterPerSecond = (distanceM / durationSecs);
@@ -210,7 +222,21 @@ public class Functions {
         }
     }
 
-    public  double getBearing(List<TripPos> aTrip, int step) {
+    private Double distance(LatLong src, LatLong dst) {
+
+        Coordinate latFrom = new DegreeCoordinate(src.latitude);
+        Coordinate lngFrom = new DegreeCoordinate(src.longitude);
+        Point from = new Point(latFrom, lngFrom);
+
+        Coordinate latTo = new DegreeCoordinate(dst.latitude);
+        Coordinate lngTo = new DegreeCoordinate(dst.longitude);
+        Point to = new Point(latTo, lngTo);
+
+        return EarthCalc.getDistance(from, to);
+    }
+
+
+    public double calcBearing(List<TripPos> aTrip, int step) {
         /**
          * Formula: θ = atan2( sin(Δlong).cos(lat2), cos(lat1).sin(lat2) −
          * sin(lat1).cos(lat2).cos(Δlong) )
@@ -218,23 +244,17 @@ public class Functions {
 
         TripPos forePoint = aTrip.get(step);
         TripPos standPoint = null;
-        if(step == 0){
+        if (step == 0) {
             standPoint = aTrip.get(step);
-        } else{
+        } else {
             standPoint = aTrip.get(step - 1);
         }
-
-
         double y = sin(toRadians(forePoint.longitude - standPoint.longitude)) * cos(toRadians(forePoint.latitude));
         double x = cos(toRadians(standPoint.latitude)) * sin(toRadians(forePoint.latitude))
                 - sin(toRadians(standPoint.latitude)) * cos(toRadians(forePoint.latitude)) * cos(toRadians(forePoint.longitude - standPoint.longitude));
         double bearing = (atan2(y, x) + 2 * PI) % (2 * PI);
         return toDegrees(bearing);
     }
-
-
-
-
 
 
 }

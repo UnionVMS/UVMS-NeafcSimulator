@@ -33,16 +33,14 @@ public class TimerBean {
     Functions functions;
 
     AssetDTO asset;
-    List<TripPos> aTrip;
-    LatLong position;
+    List<LatLong> aTrip;
     int tripStep = 0;
 
     @PostConstruct
     public void init() {
         LOG.info("init");
         asset = functions.createTestAsset();
-        aTrip = functions.generateTrondheimTrip();
-        position = new LatLong(76.258, -1.7578, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
+        aTrip = functions.generateTrip();
     }
 
     @PreDestroy
@@ -51,15 +49,17 @@ public class TimerBean {
         aTrip.clear();
     }
 
-    private void calcPosition() {
-        position.longitude = aTrip.get(tripStep).longitude;
-        position.latitude = aTrip.get(tripStep).latitude;
-        position.positionTime = Date.from(Instant.now().minusMillis(10 * 60 * 1000));
-        position.bearing = functions.getBearing(aTrip, tripStep);
+    private  LatLong  calcPosition() {
+
+        aTrip.get(tripStep).positionTime = Date.from(Instant.now().minusMillis(10 * 60 * 1000));
+        LatLong position = aTrip.get(tripStep);
+        position.speed = functions.calcSpeed(aTrip, tripStep);
+        LOG.info(position.toString());
         tripStep++;
         if (tripStep >= aTrip.size()) {
             tripStep = 0;
         }
+        return position;
     }
 
 
@@ -67,7 +67,7 @@ public class TimerBean {
     void sendPosition() {
 
         try {
-            calcPosition();
+            LatLong position = calcPosition();
             functions.sendPositionToNAFPlugin( position, asset);
         } catch (IOException e) {
             LOG.error(e.toString(), e);
