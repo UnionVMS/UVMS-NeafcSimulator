@@ -19,6 +19,7 @@ import java.util.List;
 // execute           :  java -jar UVMS-NeafcSimulator-1.0-SNAPSHOT-runner
 // stop              :  ctrl-c
 //
+// mvnw quarkus:generate-config -Dfile=TESTapplication.properties
 
 
 // list available extentions mvnw quarkus:list-extensions
