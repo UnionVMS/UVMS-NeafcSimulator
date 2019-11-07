@@ -19,5 +19,15 @@ public class RestEndpointsTest {
                 .body(is("Hello from UVMS-NeafcSimulator."));
     }
 
+    @Test
+    public void testException() {
+        given()
+                .when()
+                .get("/neafcsimulator/e")
+                .then()
+                .statusCode(400)
+                .body(is("hoppsan"));
+    }
+
 
 }

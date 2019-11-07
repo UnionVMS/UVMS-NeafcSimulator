@@ -13,4 +13,11 @@ public class RestEndpoints {
     public String hello() {
         return "Hello from UVMS-NeafcSimulator.";
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("e")
+    public String throwAnException() {
+        throw new RuntimeException("hoppsan");
+    }
 }

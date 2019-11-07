@@ -15,7 +15,7 @@ public class MyExceptionMapper implements ExceptionMapper<RuntimeException> {
 
         return Response.status(Response.Status.BAD_REQUEST)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .entity("This is an errormessage")
+                .entity(exception.getMessage())
                 .build();
     }
 }
